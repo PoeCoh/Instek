@@ -1,14 +1,33 @@
 const std = @import("std");
+const GPD = @import("GPD.zig");
 
-test "sanity" {
-    const buffer = "1";
-    const result = std.mem.eql(u8, buffer, "1");
-    try std.testing.expect(result);
+test "independent" {
+    const gpd = try GPD.independent("COM1", .{
+        .ch1 = .{ .voltage = 12, .current = 1 },
+        .ch2 = .{ .voltage = 12, .current = 1 },
+    });
+    defer gpd.deinit();
 
+    try gpd.on();
+    _ = try gpd.read(.one, .voltage);
 }
 
-test "parse" {
-    const buffer = "1";
-    const result = try std.fmt.parseInt(u8, buffer, 10);
-    try std.testing.expectEqual(result, 1);
+test "series" {
+    const gpd = try GPD.series("COM1", .{
+        .tracked = .{ .voltage = 12, .current = 1 },
+    });
+    defer gpd.deinit();
+
+    try gpd.on();
+    _ = try gpd.read(.tracked, .voltage);
+}
+
+test "parallel" {
+    const gpd = try GPD.parallel("COM1", .{
+        .tracked = .{ .voltage = 12, .current = 1 },
+    });
+    defer gpd.deinit();
+
+    try gpd.on();
+    _ = try gpd.read(.tracked, .voltage);
 }
