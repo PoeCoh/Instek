@@ -1,33 +1,8 @@
 const std = @import("std");
-const GPD = @import("GPD.zig");
 
-test "independent" {
-    const gpd = try GPD.independent("COM1", .{
-        .ch1 = .{ .voltage = 12, .current = 1 },
-        .ch2 = .{ .voltage = 12, .current = 1 },
-    });
-    defer gpd.deinit();
-
-    try gpd.on();
-    _ = try gpd.read(.one, .voltage);
-}
-
-test "series" {
-    const gpd = try GPD.series("COM1", .{
-        .tracked = .{ .voltage = 12, .current = 1 },
-    });
-    defer gpd.deinit();
-
-    try gpd.on();
-    _ = try gpd.read(.tracked, .voltage);
-}
-
-test "parallel" {
-    const gpd = try GPD.parallel("COM1", .{
-        .tracked = .{ .voltage = 12, .current = 1 },
-    });
-    defer gpd.deinit();
-
-    try gpd.on();
-    _ = try gpd.read(.tracked, .voltage);
-}
+test "this stuff" {
+    var buffer: [1024:0]u8 = undefined;
+    _ = try std.fmt.bufPrint(&buffer, "12.1{d}V", .{42});
+    const v_index = std.mem.indexOf(u8, &buffer, "V") orelse 0;
+    const voltage = buffer[0..v_index];
+    std.debug.print("{s}\n", .{voltage});}
