@@ -23,9 +23,9 @@
     // Once all dependencies are fetched, `zig build` no longer requires
     // internet connectivity.
     .dependencies = .{
-        .serial = .{
-            .url = "https://github.com/PoeCoh/serial/archive/89cc670c039803d738a5ca514ef2ce9d74c33bd4.tar.gz",
-            .hash = "122034f45e562377f651a12bcd3c613ab2a1995aafe2965360bbdeb8eab1a4495421",
+        .SerialPort = .{
+            .url = "https://github.com/PoeCoh/SerialPort/archive/8855d31845ff21bb66de261fb7de5726387db496.tar.gz",
+            .hash = "122036edfd58c4ef8225fa4c3a702040e56e91706e7ffe8919ac4ba68744904c7c69",
         },
     },
     .paths = .{
