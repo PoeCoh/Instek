@@ -24,7 +24,7 @@ pub fn build(b: *std.Build) void {
         .optimize = optimize,
     });
 
-    const remote_module = b.dependency("serial", .{
+    const remote_module = b.dependency("SerialPort", .{
         .target = target,
         .optimize = optimize,
     }).module("SerialPort");
