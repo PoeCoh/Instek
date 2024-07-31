@@ -1,14 +1,16 @@
 const std = @import("std");
+const X303S = @import("X303S.zig");
 
-test "sanity" {
-    const buffer = "1";
-    const result = std.mem.eql(u8, buffer, "1");
-    try std.testing.expect(result);
-
-}
-
-test "parse" {
-    const buffer = "1";
-    const result = try std.fmt.parseInt(u8, buffer, 10);
-    try std.testing.expectEqual(result, 1);
+test "basic" {
+    var gpd = try X303S.init("COM1");
+    defer gpd.deinit();
+    try gpd.independent(
+        .{ .voltage = 12, .current = 3 },
+        .{},
+    );
+    try gpd.series(.{ .voltage = 40, .current = 3 });
+    try gpd.parallel(.{ .voltage = 12, .current = 6 });
+    try gpd.beep(.on);
+    try gpd.power(.on);
+    try gpd.independent(.{ .voltage = 3 }, .{ .current = 1 });
 }

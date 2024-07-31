@@ -15,6 +15,12 @@ pub fn build(b: *std.Build) void {
     // set a preferred release mode, allowing the user to decide how to optimize.
     const optimize = b.standardOptimizeOption(.{});
 
+    _ = b.addModule("X303S", .{
+        .root_source_file = b.path("src/X303S.zig"),
+        .optimize = optimize,
+        .target = target,
+    });
+
     const lib = b.addStaticLibrary(.{
         .name = "Instek",
         // In this case the main source file is merely a path, however, in more
@@ -24,7 +30,7 @@ pub fn build(b: *std.Build) void {
         .optimize = optimize,
     });
 
-    const remote_module = b.dependency("serial", .{
+    const serial_port = b.dependency("SerialPort", .{
         .target = target,
         .optimize = optimize,
     }).module("SerialPort");
@@ -40,7 +46,7 @@ pub fn build(b: *std.Build) void {
         .target = target,
         .optimize = optimize,
     });
-    exe.root_module.addImport("SerialPort", remote_module);
+    exe.root_module.addImport("SerialPort", serial_port);
 
     // This declares intent for the executable to be installed into the
     // standard location when the user invokes the "install" step (the default
